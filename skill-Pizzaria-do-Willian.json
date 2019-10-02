@@ -1,0 +1,562 @@
+{
+  "name": "Pizzaria do Willian",
+  "intents": [
+    {
+      "intent": "saudacao",
+      "examples": [
+        {
+          "text": "tudo bem"
+        },
+        {
+          "text": "oi"
+        },
+        {
+          "text": "bom dia"
+        },
+        {
+          "text": "boa tarde"
+        },
+        {
+          "text": "boa noite"
+        },
+        {
+          "text": "ola"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "pedir_pizza",
+      "examples": [
+        {
+          "text": "quero pizza"
+        },
+        {
+          "text": "iniciar pedido de pizza"
+        },
+        {
+          "text": "eu gostaria de fazer um pedido"
+        },
+        {
+          "text": "me vê uma pizza"
+        },
+        {
+          "text": "quero pedir uma pizza"
+        },
+        {
+          "text": "por favor quero fazer meu pedido"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "saber_sabores",
+      "examples": [
+        {
+          "text": "quais os recheios de pizza"
+        },
+        {
+          "text": "quais os sabores de pizza"
+        },
+        {
+          "text": "voces tem pizza de que"
+        },
+        {
+          "text": "quero saber os sabores de pizza"
+        },
+        {
+          "text": "quais sabores voces tem"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sabor",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Calabresa",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Portuguesa",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Atum",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Mussarela",
+          "synonyms": [
+            "queijo"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-date",
+      "values": [],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "tipo-massa",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Massa grossa",
+          "synonyms": [
+            "grossa"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Massa fina",
+          "synonyms": [
+            "fina"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sim-nao",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "nao entendi",
+          "synonyms": [
+            "nao sei",
+            "repita",
+            "nao ficou claro",
+            "me esclareca"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Nao",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Sim",
+          "synonyms": [
+            "ok",
+            "certo",
+            "blz",
+            "beleza"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "informacao-entrega",
+      "values": [
+        {
+          "type": "patterns",
+          "value": "CEP",
+          "patterns": [
+            "[0-9]{5}-[0-9]{3}"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "language": "pt-br",
+  "metadata": {
+    "api_version": {
+      "major_version": "v1",
+      "minor_version": "2018-09-20"
+    }
+  },
+  "skill_id": "3a077a92-545d-4252-aba9-dbe5cb6e377c",
+  "description": "Base de conhecimento criada para o mini-curso da Semana Acadêmica 2019 (IFS - Campus Lagarto)",
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "title": "handler_6_1569192400706",
+      "output": {
+        "text": {
+          "values": [
+            "Qual o tipo de massa?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_8_1569192400704",
+      "event_name": "focus",
+      "dialog_node": "handler_6_1569192400706",
+      "previous_sibling": "handler_7_1569192400706"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_7_1569192451150",
+      "output": {
+        "text": {
+          "values": [
+            "Você quer massa fina ou grossa?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_8_1569192400704",
+      "conditions": "!@tipo-massa",
+      "event_name": "nomatch",
+      "dialog_node": "handler_7_1569192451150",
+      "previous_sibling": "handler_6_1569192400706"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_7_1569192400706",
+      "output": {},
+      "parent": "slot_8_1569192400704",
+      "context": {
+        "tipo_massa": "@tipo-massa"
+      },
+      "conditions": "@tipo-massa",
+      "event_name": "input",
+      "dialog_node": "handler_7_1569192400706"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "Qual a data de entrega?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_5_1569432226273",
+      "event_name": "focus",
+      "dialog_node": "handler_5_1569432226276",
+      "previous_sibling": "handler_6_1569432226276"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_5_1569432226273",
+      "context": {
+        "date": "@sys-date"
+      },
+      "conditions": "@sys-date",
+      "event_name": "input",
+      "dialog_node": "handler_6_1569432226276"
+    },
+    {
+      "type": "response_condition",
+      "title": "response_1_1569338680089",
+      "output": {
+        "text": {
+          "values": [
+            "Pedido cancelado!"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1569263983975",
+      "conditions": "@sim-nao:Nao",
+      "dialog_node": "response_1_1569338680089",
+      "previous_sibling": "response_6_1569338656755"
+    },
+    {
+      "type": "response_condition",
+      "title": "response_6_1569338656755",
+      "output": {
+        "text": {
+          "values": [
+            "Pronto! O seu pedido foi concluído e em breve você estará recebendo em sua casa. Agradecemos à preferência!"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1569263983975",
+      "conditions": "@sim-nao:Sim",
+      "dialog_node": "response_6_1569338656755"
+    },
+    {
+      "type": "slot",
+      "title": "slot_6_1569193345011",
+      "output": {},
+      "parent": "node_3_1569187352960",
+      "variable": "$informacao_entrega",
+      "dialog_node": "slot_6_1569193345011",
+      "previous_sibling": "slot_8_1569192400704"
+    },
+    {
+      "type": "response_condition",
+      "title": "response_10_1569191927032",
+      "output": {
+        "text": {
+          "values": [
+            "Resumo do seu pedido: Pizza de $sabor, com $tipo_massa"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_3_1569187352960",
+      "disabled": true,
+      "dialog_node": "response_10_1569191927032",
+      "previous_sibling": "slot_5_1569432226273"
+    },
+    {
+      "type": "slot",
+      "title": "slot_4_1569192237496",
+      "output": {},
+      "parent": "node_3_1569187352960",
+      "variable": "$sabor",
+      "dialog_node": "slot_4_1569192237496",
+      "previous_sibling": "node_4_1569263983975"
+    },
+    {
+      "type": "slot",
+      "title": "slot_8_1569192400704",
+      "output": {},
+      "parent": "node_3_1569187352960",
+      "variable": "$tipo_massa",
+      "dialog_node": "slot_8_1569192400704",
+      "previous_sibling": "slot_4_1569192237496"
+    },
+    {
+      "type": "event_handler",
+      "parent": "node_3_1569187352960",
+      "disabled": true,
+      "event_name": "focus",
+      "dialog_node": "handler_1_1569191883008",
+      "previous_sibling": "response_10_1569191927032"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1569187352960",
+      "variable": "$date",
+      "dialog_node": "slot_5_1569432226273",
+      "previous_sibling": "slot_6_1569193345011"
+    },
+    {
+      "type": "standard",
+      "title": "Confirmacao do pedido",
+      "parent": "node_3_1569187352960",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "@sim-nao",
+      "dialog_node": "node_4_1569263983975"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_6_1569192237498",
+      "output": {
+        "text": {
+          "values": [
+            "Qual sabor você deseja?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_4_1569192237496",
+      "event_name": "focus",
+      "dialog_node": "handler_6_1569192237498",
+      "previous_sibling": "handler_10_1569192237498"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "Você não informou um sabor válido."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_4_1569192237496",
+      "event_name": "nomatch",
+      "dialog_node": "handler_6_1569192308664",
+      "previous_sibling": "handler_6_1569192237498"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_10_1569192237498",
+      "output": {},
+      "parent": "slot_4_1569192237496",
+      "context": {
+        "sabor": "@sabor"
+      },
+      "conditions": "@sabor",
+      "event_name": "input",
+      "dialog_node": "handler_10_1569192237498"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "CEP inválido."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_6_1569193345011",
+      "event_name": "nomatch",
+      "dialog_node": "handler_7_1569193384081",
+      "previous_sibling": "handler_10_1569193345014"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_10_1569193345014",
+      "output": {
+        "text": {
+          "values": [
+            "Informe o CEP de entrega."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_6_1569193345011",
+      "event_name": "focus",
+      "dialog_node": "handler_10_1569193345014",
+      "previous_sibling": "handler_8_1569193345014"
+    },
+    {
+      "type": "event_handler",
+      "title": "handler_8_1569193345014",
+      "output": {},
+      "parent": "slot_6_1569193345011",
+      "context": {
+        "informacao_entrega": "@informacao-entrega.literal"
+      },
+      "conditions": "@informacao-entrega",
+      "event_name": "input",
+      "dialog_node": "handler_8_1569193345014"
+    },
+    {
+      "type": "frame",
+      "title": "Pedido de Pizza",
+      "output": {
+        "generic": [
+          {
+            "title": "Confirme seu pedido!",
+            "options": [
+              {
+                "label": "Sim, confirmo.",
+                "value": {
+                  "input": {
+                    "text": "sim"
+                  }
+                }
+              },
+              {
+                "label": "Não, quero cancelar.",
+                "value": {
+                  "input": {
+                    "text": "nao"
+                  }
+                }
+              }
+            ],
+            "description": "O resumo do seu pedido é: Pizza de $sabor, com $tipo_massa, entregando no CEP $informacao_entrega na data $date.",
+            "response_type": "option"
+          }
+        ]
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "user_input",
+        "dialog_node": "node_4_1569263983975"
+      },
+      "conditions": "#pedir_pizza",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_3_1569187352960",
+      "digress_out": "allow_all",
+      "previous_sibling": "node_8_1569181006609",
+      "digress_out_slots": "allow_all"
+    },
+    {
+      "type": "standard",
+      "title": "Saudadacao",
+      "output": {
+        "text": {
+          "values": [
+            "Opa! Tudo bem? Já decidiu o que vai pedir?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "conditions": "#saudacao",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_8_1569181006609",
+      "previous_sibling": "Bem-vindo"
+    },
+    {
+      "type": "standard",
+      "title": "Sabores de Pizza",
+      "output": {
+        "text": {
+          "values": [
+            "Temos de queijo, calabresa e atum."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1569187352960"
+      },
+      "conditions": "#saber_sabores",
+      "digress_in": "returns",
+      "dialog_node": "node_1_1569438196096",
+      "digress_out": "allow_all",
+      "previous_sibling": "node_3_1569187352960"
+    },
+    {
+      "type": "standard",
+      "title": "Em outros casos",
+      "output": {
+        "text": {
+          "values": [
+            "Eu não entendi. Você pode tentar reformular a frase.",
+            "Você pode reformular sua afirmação? Eu não estou entendendo.",
+            "Eu não entendi o sentido."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Em outros casos",
+      "previous_sibling": "node_1_1569438196096"
+    },
+    {
+      "type": "standard",
+      "title": "Bem-vindo",
+      "output": {
+        "text": {
+          "values": [
+            "Olá, seja bem-vindo ao bot da Pizzaria do Willian. Como posso te ajudar?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "conditions": "welcome",
+      "dialog_node": "Bem-vindo"
+    }
+  ],
+  "workspace_id": "3a077a92-545d-4252-aba9-dbe5cb6e377c",
+  "counterexamples": [],
+  "system_settings": {},
+  "learning_opt_out": false,
+  "status": "Available"
+}
